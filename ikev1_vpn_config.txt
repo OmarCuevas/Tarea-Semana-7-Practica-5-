@@ -1,0 +1,119 @@
+IKEv1 SITE TO SITE POLICY BASED VPN LAB
+
+Topology
+
+PC1 —- R1 —- ISP —- R2 —- PC2
+
+LAN Networks 192.168.63.0/24 192.168.64.0/24
+
+WAN Links R1 - ISP : 10.63.1.0/30 R2 - ISP : 10.63.2.0/30
+
+======================== ROUTER R1 CONFIGURATION
+========================
+
+hostname R1
+
+interface e0/1 no switchport ip address 10.63.1.1 255.255.255.252 no
+shutdown
+
+interface e0/2 no switchport ip address 192.168.63.1 255.255.255.0 no
+shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.63.1.2 ip route 192.168.64.0 255.255.255.0
+10.63.1.2
+
+crypto isakmp policy 10 encryption aes hash sha authentication pre-share
+group 2 lifetime 86400
+
+crypto isakmp key cisco address 10.63.2.2
+
+crypto ipsec transform-set TS esp-aes esp-sha-hmac
+
+ip access-list extended VPN-TRAFFIC permit ip 192.168.63.0 0.0.0.255
+192.168.64.0 0.0.0.255
+
+crypto map CMAP 10 ipsec-isakmp set peer 10.63.2.2 set transform-set TS
+match address VPN-TRAFFIC
+
+interface e0/1 crypto map CMAP
+
+======================== ROUTER R2 CONFIGURATION
+========================
+
+hostname R2
+
+interface e0/1 no switchport ip address 10.63.2.2 255.255.255.252 no
+shutdown
+
+interface e0/2 no switchport ip address 192.168.64.1 255.255.255.0 no
+shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.63.2.1 ip route 192.168.63.0 255.255.255.0
+10.63.2.1
+
+crypto isakmp policy 10 encryption aes hash sha authentication pre-share
+group 2 lifetime 86400
+
+crypto isakmp key cisco address 10.63.1.1
+
+crypto ipsec transform-set TS esp-aes esp-sha-hmac
+
+ip access-list extended VPN-TRAFFIC permit ip 192.168.64.0 0.0.0.255
+192.168.63.0 0.0.0.255
+
+crypto map CMAP 10 ipsec-isakmp set peer 10.63.1.1 set transform-set TS
+match address VPN-TRAFFIC
+
+interface e0/1 crypto map CMAP
+
+======================== ISP ROUTER CONFIGURATION
+========================
+
+hostname ISP
+
+interface e0/1 no switchport ip address 10.63.1.2 255.255.255.252 no
+shutdown
+
+interface e0/2 no switchport ip address 10.63.2.1 255.255.255.252 no
+shutdown
+
+ip route 192.168.63.0 255.255.255.0 10.63.1.1 ip route 192.168.64.0
+255.255.255.0 10.63.2.2
+
+======================== VPCS CONFIGURATION ========================
+
+PC1
+
+ip 192.168.63.10 255.255.255.0 192.168.63.1
+
+PC2
+
+ip 192.168.64.10 255.255.255.0 192.168.64.1
+
+======================== VERIFICATION COMMANDS ========================
+
+Generate traffic from PC1
+
+ping 192.168.64.10
+
+Check IKE Phase 1
+
+show crypto isakmp sa
+
+Check IPSec Phase 2
+
+show crypto ipsec sa
+
+Show crypto map
+
+show crypto map
+
+Show interesting traffic ACL
+
+show access-lists VPN-TRAFFIC
+
+Expected Result
+
+Encrypted communication between
+
+192.168.63.0/24 and 192.168.64.0/24
