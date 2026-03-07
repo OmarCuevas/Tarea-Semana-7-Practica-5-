@@ -1,0 +1,110 @@
+========================================
+CONFIGURACIÓN COMPLETA
+VPN SITE TO SITE GRE TUNNEL
+========================================
+
+
+========================
+ROUTER R1
+========================
+
+hostname R1
+
+interface e0/1
+ no switchport
+ ip address 10.63.1.1 255.255.255.252
+ no shutdown
+
+interface e0/2
+ no switchport
+ ip address 192.168.63.1 255.255.255.0
+ no shutdown
+
+interface tunnel0
+ ip address 172.16.1.1 255.255.255.252
+ tunnel source e0/1
+ tunnel destination 10.63.2.2
+ no shutdown
+
+ip route 192.168.64.0 255.255.255.0 172.16.1.2
+
+
+
+========================
+ROUTER R2
+========================
+
+hostname R2
+
+interface e0/1
+ no switchport
+ ip address 10.63.2.2 255.255.255.252
+ no shutdown
+
+interface e0/2
+ no switchport
+ ip address 192.168.64.1 255.255.255.0
+ no shutdown
+
+interface tunnel0
+ ip address 172.16.1.2 255.255.255.252
+ tunnel source e0/1
+ tunnel destination 10.63.1.1
+ no shutdown
+
+ip route 192.168.63.0 255.255.255.0 172.16.1.1
+
+
+
+========================
+ROUTER ISP
+========================
+
+hostname ISP
+
+interface e0/1
+ ip address 10.63.1.2 255.255.255.252
+ no shutdown
+
+interface e0/2
+ ip address 10.63.2.1 255.255.255.252
+ no shutdown
+
+ip route 192.168.63.0 255.255.255.0 10.63.1.1
+ip route 192.168.64.0 255.255.255.0 10.63.2.2
+
+
+
+========================
+PC1 (VPCS)
+========================
+
+ip 192.168.63.10 255.255.255.0 192.168.63.1
+
+
+
+========================
+PC2 (VPCS)
+========================
+
+ip 192.168.64.10 255.255.255.0 192.168.64.1
+
+
+
+========================
+PRUEBA DE CONECTIVIDAD
+========================
+
+Desde PC1
+
+ping 192.168.64.10
+
+
+
+========================
+COMANDOS DE VERIFICACIÓN
+========================
+
+show ip interface brief
+show interface tunnel0
+ping 192.168.64.10
