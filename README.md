@@ -71,7 +71,8 @@ Descripción de los dispositivos:
 ### Captura de la Topología
 
 
-(Aquí va screenshot de la topología en PNETLab)
+<img width="1400" height="642" alt="image" src="https://github.com/user-attachments/assets/f9447d03-a6f1-4981-99da-5cb8a7d34cdd" />
+
 
 
 ---
@@ -176,7 +177,8 @@ ping 192.168.64.10
 ### Captura del Ping
 
 
-(Aquí va screenshot del ping funcionando)
+<img width="707" height="246" alt="image" src="https://github.com/user-attachments/assets/31d560cc-f7e8-4f17-8793-d154bde694c3" />
+
 
 
 ---
@@ -196,7 +198,8 @@ QM_IDLE
 ### Captura del comando
 
 
-(Aquí va screenshot de show crypto isakmp sa)
+<img width="639" height="162" alt="image" src="https://github.com/user-attachments/assets/a1121d91-ced2-4f08-89f5-d61e6175628e" />
+
 
 
 ---
@@ -217,7 +220,8 @@ packets decaps
 ### Captura del comando
 
 
-(Aquí va screenshot de show crypto ipsec sa)
+<img width="871" height="449" alt="image" src="https://github.com/user-attachments/assets/bcdd552c-16d2-45af-b068-b6945e4d62eb" />
+
 
 
 ---
