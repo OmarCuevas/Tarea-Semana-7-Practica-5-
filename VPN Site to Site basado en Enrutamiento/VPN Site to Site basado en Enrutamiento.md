@@ -165,6 +165,7 @@ El router ISP solo se utilizó para dar tránsito entre ambos extremos de la VPN
     crypto ikev2 policy POL-IKEV2
      proposal PROP-IKEV2
 
+
     crypto ikev2 keyring KR-IKEV2
      peer R2
       address 10.63.2.2
